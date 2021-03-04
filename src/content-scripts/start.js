@@ -2,7 +2,7 @@
 
 // window.location.href ="/studyApp/setViewTime?_enctoken=acc331d0aa08defa602ccbf01d20270f&xkid=3114722"
 browser.runtime.onMessage.addListener(request => {
-  console.log('request',request);
+  console.log('request', request);
   // window.location.href = request.videoUrl;
   switch (request.type) {
     /**
@@ -10,47 +10,52 @@ browser.runtime.onMessage.addListener(request => {
      */
     case 3:
       const videoArray = document.getElementsByClassName('leveltwo');
+      let max = 0;
       const arr = Array.from(videoArray).map(i => {
         const input = i.innerHTML.match(/value="(.+?)"/);
-        if (input && input[1] === "2") {
+        max = Math.max(max, Number(input?input[1] : ""))
+        if (input) {
           const a = i.children[0].children[2].children[0];
           // a.target = "_blank";  // 是否在当前页打开
           return {
             tabId: request.tabId,
-            a: a
+            // tabId: 3,
+            a: a,
+            max:Number(input[1]),
           };
         }
-      }).filter(i => i !== undefined);
+      }).filter(i => i!==undefined&&i.max===max);
+      console.log('max', max)
       console.log('arr', arr)
+
       return openTab(request, arr);
 
     case 2:
       console.log('request.type', request.type);
 
-        const videoBtn = document.getElementById('iframe').contentWindow.document.getElementsByClassName('ans-attach-online ans-insertvideo-online')[0]
-          .contentWindow.document.getElementsByClassName('vjs-big-play-button')[0];
-        const video = document.getElementById('iframe').contentWindow.document.getElementsByClassName('ans-attach-online ans-insertvideo-online')[0]
-          .contentWindow.document.getElementById('video_html5_api');
-        console.log('video', video)
-        video.preload = true;
-        video.pause = () => {
-        };
-        console.log('video.pause', video.pause);
+      const videoBtn = document.getElementById('iframe').contentWindow.document.getElementsByClassName('ans-attach-online ans-insertvideo-online')[0]
+        .contentWindow.document.getElementsByClassName('vjs-big-play-button')[0];
+      const video = document.getElementById('iframe').contentWindow.document.getElementsByClassName('ans-attach-online ans-insertvideo-online')[0]
+        .contentWindow.document.getElementById('video_html5_api');
+      console.log('video', video)
+      video.preload = true;
+      video.pause = () => {
+      };
+      console.log('video.pause', video.pause);
 
-        videoBtn.click();
-        video.pause = () => {};
-
-
+      videoBtn.click();
+      video.pause = () => {
+      };
 
 
       const progress = document.getElementById('iframe').contentWindow.document.getElementsByClassName('ans-attach-online ans-insertvideo-online')[0]
         .contentWindow.document.getElementsByClassName('vjs-play-progress vjs-slider-bar')[0];
 
-      let currentTime =0.000;
+      let currentTime = 0.000;
       const handler = setInterval(() => {
         console.log(Number.parseFloat(progress.style.width));
 
-        if(currentTime === Number.parseFloat(progress.style.width)){
+        if (currentTime === Number.parseFloat(progress.style.width)) {
           const videoBtn = document.getElementById('iframe').contentWindow.document.getElementsByClassName('ans-attach-online ans-insertvideo-online')[0]
             .contentWindow.document.getElementsByClassName('vjs-big-play-button')[0];
           const video = document.getElementById('iframe').contentWindow.document.getElementsByClassName('ans-attach-online ans-insertvideo-online')[0]
@@ -62,7 +67,8 @@ browser.runtime.onMessage.addListener(request => {
           console.log('video.pause', video.pause);
 
           videoBtn.click();
-          video.pause = () => {};
+          video.pause = () => {
+          };
         }
         currentTime = Number.parseFloat(progress.style.width);
 
