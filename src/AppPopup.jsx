@@ -18,9 +18,10 @@ export default class AppPopup extends React.Component {
       if (info.status === "complete" && id === this.tabId) {
         console.log(id, info, tab.url,);
         if (reg.test(tab.url)) {
-          this.handleButtonClick();
+          setTimeout(()=>this.handleButtonClick(),3000)
+
         } else {
-          this.handleShow();
+          setTimeout(()=>this.handleShow(),3000)
         }
       }
     });
