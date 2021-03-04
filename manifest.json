@@ -1,0 +1,52 @@
+{
+  "name": "文理学院小助手",
+  "version": "1.0",
+  "description": "尝试自动解析文理学院视屏",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "http://127.0.0.1/",
+    "webRequest"
+  ],
+  "__firefox__browser_specific_settings": {
+    "gecko": {
+      "id": "yuheng_0710@outlook.com"
+    }
+  },
+  "__chrome__options_page": "options.html",
+  "__firefox__options_ui": {
+    "page": "options.html",
+    "browser_style": true
+  },
+  "background": {
+    "scripts": [
+      "/static/js/background.js"
+    ],
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "js": [
+        "/static/js/content-script-start.js",
+        "/static/js/content-script-injected.js"
+
+      ]
+    }
+  ],
+  "web_accessible_resources": ["/static/js/content-script-injected.js"],
+  "browser_action": {
+    "default_icon":  "logo/get_start.png",
+    "default_title": "湖北文理学院观看小助手",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "logo/get_start.png",
+    "32": "logo/get_start.png",
+    "48": "logo/get_start.png",
+    "128": "logo/get_start.png"
+  },
+  "manifest_version": 2
+}
